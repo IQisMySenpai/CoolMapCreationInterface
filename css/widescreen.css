@@ -1,0 +1,520 @@
+:root {
+    --background: rgba(107, 207, 141, 1);
+    --road_border: rgba(200, 200, 200, 1);
+    --road_asphalt: rgba(120, 120, 120, 1);
+    --road_line: rgba(255, 255, 255, 1);
+    --bike_line: rgba(255, 255, 0, 1);
+    --bike_lane: rgba(255, 0, 0, 0.3);
+    --arrow_line: rgba(255, 255, 255, 1);
+    --grid: rgba(26, 146, 134, 1);
+    --grabbable: rgba(255, 255, 255, 1);
+    --interface-background: rgba(255, 255, 255, 1);
+    --interface-back: rgba(80, 80, 80, 1);
+    --interface-border: rgba(180, 180, 180, 1);
+    --interface-hover: rgba(220, 220, 220, 1);
+    --interface_width: 20rem;
+    --interface-border-width: 2px;
+    --simulation-slider-background: rgba(0, 0, 0, 1);
+    --simulation-slider-thumb: rgba(200, 0, 0, 1);
+    --simulation-input-background: rgba(255, 255, 255, 1);
+    --simulation-input-border: rgba(180, 180, 180, 1);
+    --simulation-input-hover: rgba(220, 220, 220, 1);
+    --loading-background: rgba(33, 182, 168, 1);
+    --loading-front: rgba(255, 255, 255, 1);
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: scroll;
+    background-color: var(--background);
+    position: relative;
+    cursor: crosshair;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body.grabbing * {
+    cursor: grabbing !important;
+}
+
+.roads {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+    z-index: 3;
+}
+
+.intersections {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+    z-index: 4;
+}
+
+.intersection_border {
+    fill: var(--road_border);
+}
+
+.intersection_asphalt {
+    fill: var(--road_asphalt);
+}
+
+.road_border {
+    stroke-linecap: round;
+    stroke: var(--road_border);
+    fill: none;
+}
+
+.road_asphalt {
+    stroke-linecap: round;
+    stroke: var(--road_asphalt);
+    fill: none;
+}
+
+.road_line {
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill: none;
+}
+
+.bike_path {
+    stroke: var(--bike_lane);
+    fill: none;
+}
+
+.car_direction {
+    stroke: var(--road_line);
+}
+
+.car {
+    stroke: var(--road_line);
+    stroke-dasharray: 5, 10;
+}
+
+.bike_direction {
+    stroke: var(--bike_line);
+}
+
+.bike {
+    stroke: var(--bike_line);
+    stroke-dasharray: 5, 10;
+}
+
+.arrow_line {
+    stroke: var(--arrow_line);
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill: none;
+}
+
+.arrow_head {
+    stroke: var(--arrow_line);
+    stroke-width: 1;
+    stroke-opacity: 1;
+    fill: var(--arrow_line);
+}
+
+.grid_container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+    z-index: 2;
+}
+
+.gradient_inner {
+    stop-color: var(--grid);
+    stop-opacity: 1;
+}
+
+.gradient_outer {
+    stop-color: var(--background);
+    stop-opacity: 1;
+}
+
+.grid {
+    stroke-width: 1;
+}
+
+.grabpoints {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+}
+
+.snappoints {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+
+}
+
+.grabbable {
+    background-color: var(--grabbable);
+    opacity: 0.7;
+    border-radius: 100%;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    transform: translate(-5px, -5px);
+    cursor: grab;
+    z-index: 9;
+}
+
+.grabbed {
+    opacity: 1;
+    cursor: grabbing;
+}
+
+.snap_point {
+    background-color: var(--grabbable);
+    opacity: 0;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    transform: translate(-25px, -25px);
+    z-index: 10;
+}
+
+.interface {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    width: var(--interface_width);
+    height: 70%;
+    transform: translate(0, -50%);
+    background-color: var(--interface-background);
+    z-index: 20;
+    border-radius: 1rem 0 0 1rem;
+    border-left: var(--interface-border-width) solid var(--interface-border);
+    border-top: var(--interface-border-width) solid var(--interface-border);
+    border-bottom: var(--interface-border-width) solid var(--interface-border);
+    transition-duration: 0.5s;
+    box-sizing: border-box;
+    cursor: default;
+}
+
+.interface_hidden {
+    transform: translate(calc(var(--interface_width) + var(--interface-border-width)), -50%);
+    transition-duration: 0.5s;
+}
+
+.interface_toggle {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    position: absolute;
+    top: 2rem;
+    left: -2rem;
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--interface-background);
+    border-radius: 5px 0 0 5px;
+    border: 2px solid var(--interface-border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.interface_toggle:hover {
+    background-color: var(--interface-hover);
+    transition-duration: 0.2s;
+}
+
+.interface_body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+
+.interface_body .interface_button {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border-radius: 5px;
+    border: 2px solid var(--interface-border);
+    width: 100%;
+    padding: 0.5rem;
+    background-color: var(--interface-background);
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.interface_body .interface_button:hover {
+    background-color: var(--interface-hover);
+    transition-duration: 0.2s;
+}
+
+.interface_body > h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.interface_body > .spacer {
+    height: 1rem;
+    width: 100%;
+}
+
+.interface_small_button {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background-color: transparent;
+    border-radius: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 0.8rem;
+    padding: 0.2rem;
+    width: max-content;
+    cursor: pointer;
+    color: var(--interface-back);
+}
+
+.interface_small_button:hover {
+    background-color: var(--interface-hover);
+    transition-duration: 0.2s;
+}
+
+.interface_lane {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--interface-border);
+    padding: 0.5rem 0;
+}
+
+.interface_lane:last-child {
+    border-bottom: none;
+}
+
+.interface_agent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--interface-border);
+}
+
+.interface_agent:last-child {
+    border-bottom: none;
+}
+
+.interface_agent input[type="number"] {
+    width: 3rem;
+    text-align: center;
+}
+
+.interface_delete {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background-color: #ff3333;
+    border-radius: 5px;
+    color: white;
+}
+
+.agent {
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.car {
+    background-image: url("../car.png");
+}
+
+.bike {
+    background-image: url("../bike.png");
+}
+
+.agents {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+    z-index: 7;
+}
+
+.simulation {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 15;
+    display: flex;
+    width: 50%;
+    height: 3rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.simulation_slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--simulation-slider-background);
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    opacity: 1;
+}
+
+.simulation_slider:disabled {
+    opacity: 0.5;
+    transition-duration: 0.2s;
+}
+
+.simulation_slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 6px;
+    height: 20px;
+    border-radius: 3px;
+    background: var(--simulation-slider-thumb);
+    cursor: pointer;
+}
+
+.simulation_slider::-moz-range-thumb {
+    width: 6px;
+    height: 20px;
+    border-radius: 3px;
+    background: var(--simulation-slider-thumb);
+    cursor: pointer;
+}
+
+.simulation_input {
+    appearance: none;
+    opacity: 1;
+    font-size: 1rem;
+    background-color: var(--simulation-input-background);
+    border: 2px solid var(--simulation-input-border);
+    border-radius: 5px;
+    padding: 0.25rem 0.75rem;
+    margin: 0 0.5rem;
+}
+
+.simulation_input:hover {
+    background-color: var(--simulation-input-hover);
+    transition-duration: 0.2s;
+}
+
+.simulation_input:disabled {
+    opacity: 0.5;
+    transition-duration: 0.2s;
+}
+
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--loading-background);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: none;
+    cursor: wait;
+}
+
+.loading_bar_wrapper {
+    position: relative;
+    max-width: 30%;
+    width: 40rem;
+    height: 1rem;
+    border: 2px solid var(--loading-front);
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.loading_bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--loading-front);
+}
+
+.loading_main_header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    color: var(--loading-front);
+}
+
+.loading_sub_header {
+    font-size: 1rem;
+    margin: 0;
+    color: var(--loading-front);
+}
+
+.stop_sign {
+    fill: white;
+}
+
+.yield_sign {
+    stroke-width: 4;
+    stroke: white;
+    stroke-dasharray: 4,4;
+}
+
+@keyframes traffic_light_colors {
+    0% {
+        fill: red;
+    }
+    32% {
+        fill: red;
+    }
+    33% {
+        fill: orange;
+    }
+    65% {
+        fill: orange;
+    }
+    66% {
+        fill: green;
+    }
+    100% {
+        fill: green;
+    }
+}
+
+.traffic_light {
+    animation: traffic_light_colors 10s infinite;
+}
+
+.roundabout {
+    stroke: var(--road_border);
+    stroke-width: 2;
+    fill: var(--background);
+}
