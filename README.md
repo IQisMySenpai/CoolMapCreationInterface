@@ -27,7 +27,9 @@
 
 ## About The Interface
 The Map-Creation-Interface allows users to create maps for the simulation. The interface can after the simulation has be
-calculated also display the results of the simulation.
+calculated also display the results of the simulation. The interface was originally created for a group project at the eth.
+I have moved it to it's own repo, as some people might want to also use it. As well that after the deadline the repos
+should no longer be edited. [Link to The Original Repository](https://github.com/AliSot2000/CSSMALG)
 
 ### Important Notes
 Since the interface was started before the simulations, there are some things that you can not simulate and some things
@@ -82,11 +84,11 @@ The Map-Creation-Interface uses the following libraries:
 To get a local copy up and running follow these simple steps.
 Clone the repository
 ```sh
-git clone git@github.com:AliSot2000/CSSMALG.git
+git clone git@github.com:IQisMySenpai/CoolMapCreationInterface.git
 ```
 Change into the MapCreation directory
 ```sh
-cd CSSMALG/code/MapCreation
+cd CoolMapCreationInterface
 ```
 [1] Start the webserver or [2] open the index.html file in your browser
 
