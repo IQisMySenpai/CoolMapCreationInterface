@@ -39,13 +39,17 @@ body.grabbing * {
     cursor: grabbing !important;
 }
 
+body.calculating * {
+    cursor: wait !important;
+}
+
 .roads {
     position: absolute;
     top: 0;
     left: 0;
     width: inherit;
     height: inherit;
-    z-index: 3;
+    z-index: 4;
 }
 
 .intersections {
@@ -54,7 +58,16 @@ body.grabbing * {
     left: 0;
     width: inherit;
     height: inherit;
-    z-index: 4;
+    z-index: 5;
+}
+
+.borders {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+    z-index: 3;
 }
 
 .intersection_border {
@@ -509,7 +522,17 @@ body.grabbing * {
     }
 }
 
-.traffic_light {
+.red_light {
+    fill: red !important;
+    animation: none !important;
+}
+
+.green_light {
+    fill: green !important;
+    animation: none !important;
+}
+
+.traffic_light_wrapper {
     animation: traffic_light_colors 10s infinite;
 }
 
