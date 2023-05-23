@@ -215,7 +215,7 @@ class Interface {
         this._body.append('<button class="interface_small_button">Back to Intersections</button>');
         this._body.append('<h2>Intersection: </h2>');
         this._body.append('<div class="input"><input name="intersectionName" type="text" placeholder="Intersection Name" value="' + intersection_id + '"></div>');
-        // this._body.append('<div class="input">Round About <input name="roundabout" type="checkbox"></div>');
+        this._body.append('<div class="input">Round About <input name="roundabout" type="checkbox"></div>');
         this._body.append('<div class="spacer"></div>');
         this._body.append('<h2>Edit Intersection</h2><div class="spacer"></div>');
         this._body.append($('<button class="interface_button">Save Intersection</button>').data('intersection', intersection_id));
@@ -227,9 +227,9 @@ class Interface {
         let selector = '<div class="input">Flow <select>';
         selector += '<option value="right_of_way">Right of Way</option>'
         selector += '<option value="traffic_light">Traffic Light</option>';
-        // selector += '<option value="roundabout">Roundabout</option>';
-        // selector += '<option value="stop_sign">Stop Sign</option>';
-        // selector += '<option value="yield_sign">Yield Sign</option>';
+        selector += '<option value="roundabout">Roundabout</option>';
+        selector += '<option value="stop_sign">Stop Sign</option>';
+        selector += '<option value="yield_sign">Yield Sign</option>';
         selector += '</select></div>';
 
         for (let i = 0; i < directions.length; i++) {
@@ -352,10 +352,9 @@ class Interface {
         html += '<div class="input">Facing <input type="checkbox" name="facing"' + (facing ? ' checked' : '') + '></div>';
         html += '<div class="input">Bike Only <input type="checkbox" name="bike" onchange="toggle_only(this)"' + (bike ? ' checked' : '') + '></div>';
         html += '<div class="input">Car Only <input type="checkbox" name="car" onchange="toggle_only(this)"' + (car ? ' checked' : '') + '></div>';
-        // Restrict user to what is implemented in the simulation
-        // html += '<div class="input">Left <input type="checkbox" name="left"' + (left ? ' checked' : '') + '></div>';
-        // html += '<div class="input">Forward <input type="checkbox" name="forward"' + (forward ? ' checked' : '') + '></div>';
-        // html += '<div class="input">Right <input type="checkbox" name="right"' + (right ? ' checked' : '') + '></div>';
+        html += '<div class="input">Left <input type="checkbox" name="left"' + (left ? ' checked' : '') + '></div>';
+        html += '<div class="input">Forward <input type="checkbox" name="forward"' + (forward ? ' checked' : '') + '></div>';
+        html += '<div class="input">Right <input type="checkbox" name="right"' + (right ? ' checked' : '') + '></div>';
         html += '<button class="interface_delete">Delete</button>';
         html += '</div>';
         return html;
@@ -520,8 +519,8 @@ class Interface {
             intersection.setTrafficControllerInDirection(direction, traffic_control_type); // Set the traffic controller in the direction
         }
 
-        // let isRoundAbout = this._body.find('input[name="roundabout"]').is(':checked'); // If the intersection is a roundabout
-        // intersection.setRoundAbout(isRoundAbout); // Set the roundabout
+        let isRoundAbout = this._body.find('input[name="roundabout"]').is(':checked'); // If the intersection is a roundabout
+        intersection.setRoundAbout(isRoundAbout); // Set the roundabout
 
         return this;
     }
